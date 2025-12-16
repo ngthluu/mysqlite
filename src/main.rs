@@ -1,5 +1,9 @@
 mod repl;
 mod pager;
+mod btree;
+mod row;
+mod types;
+mod schema;
 
 use std::io::{self, Write};
 use repl::{parse_command, execute_command};

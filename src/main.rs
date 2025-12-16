@@ -1,11 +1,22 @@
 mod repl;
+mod pager;
 
 use std::io::{self, Write};
 use repl::{parse_command, execute_command};
 
-fn main() {
-    println!("Welcome to mysqlite. Enter .exit to quit.");
+use crate::pager::Pager;
 
+fn main() {
+    // Setup pager
+    let mut pager = match Pager::new("mydb.db") {
+        Ok(p) => p,
+        Err(e) => {
+            eprintln!("Error initializing Pager: {}", e);
+            return;
+        }
+    };
+
+    println!("Welcome to mysqlite. Enter .exit to quit.");
     loop {
         print!("db > ");
         io::stdout().flush().unwrap();

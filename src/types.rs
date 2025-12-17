@@ -5,6 +5,7 @@ pub enum DataType {
     Boolean,
 }
 
+#[derive(Debug)]
 pub enum Value {
     Integer(i32),
     Varchar(String),

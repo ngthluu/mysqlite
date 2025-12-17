@@ -66,7 +66,7 @@ impl BTreeTable {
         content_start -= cell_size as u16;
 
         // 3. Ghi dữ liệu vào vùng Content
-        let mut offset = content_start as usize;
+        let offset = content_start as usize;
         page[offset..offset + 4].copy_from_slice(&key.to_le_bytes()); // Ghi Key
         page[offset + 4..offset + cell_size].copy_from_slice(&serialized_row); // Ghi Payload
 

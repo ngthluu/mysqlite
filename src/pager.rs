@@ -1,7 +1,7 @@
 use std::fs::{File, OpenOptions};
 use std::io::{self, Read, Seek, SeekFrom};
 
-const PAGE_SIZE: usize = 4096;
+pub const PAGE_SIZE: usize = 4096;
 const TABLE_MAX_PAGES: usize = 100;
 
 type Page = [u8; PAGE_SIZE];
@@ -27,7 +27,12 @@ impl Pager {
         let mut pages = Vec::with_capacity(TABLE_MAX_PAGES);
         pages.resize_with(TABLE_MAX_PAGES, || None);
 
-        Ok(Self { file, file_length, pages, num_pages })
+        Ok(Self {
+            file,
+            file_length,
+            pages,
+            num_pages,
+        })
     }
 
     pub fn get_page(&mut self, page_num: u32) -> io::Result<&mut Page> {
@@ -60,7 +65,10 @@ impl Pager {
 
         match self.pages[page_num as usize].as_mut() {
             Some(page) => Ok(page),
-            None => Err(io::Error::new(io::ErrorKind::Other, "Page cache logic failed")),
+            None => Err(io::Error::new(
+                io::ErrorKind::Other,
+                "Page cache logic failed",
+            )),
         }
     }
 }

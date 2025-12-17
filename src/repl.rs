@@ -22,17 +22,15 @@ pub fn parse_command(input: &str) -> Command {
 
 pub fn execute_command(command: Command) {
     match command {
-        Command::Meta(cmd) => {
-            match cmd.as_str() {
-                ".exit" => {
-                    println!("Bye!");
-                    exit(0);
-                }
-                _ => {
-                    println!("Meta-command not recognized: {}", cmd);
-                }
+        Command::Meta(cmd) => match cmd.as_str() {
+            ".exit" => {
+                println!("Bye!");
+                exit(0);
             }
-        }
+            _ => {
+                println!("Meta-command not recognized: {}", cmd);
+            }
+        },
         Command::Statement(sql) => {
             println!("[EXECUTION] SQL Statement: '{}'", sql);
         }

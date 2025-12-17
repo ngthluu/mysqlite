@@ -1,12 +1,12 @@
-mod repl;
-mod pager;
 mod btree;
+mod pager;
+mod repl;
 mod row;
-mod types;
 mod schema;
+mod types;
 
+use repl::{execute_command, parse_command};
 use std::io::{self, Write};
-use repl::{parse_command, execute_command};
 
 use crate::pager::Pager;
 
@@ -25,7 +25,7 @@ fn main() {
         print!("db > ");
         io::stdout().flush().unwrap();
 
-        let mut input= String::new();
+        let mut input = String::new();
         match io::stdin().read_line(&mut input) {
             Ok(_) => {
                 let command = parse_command(&input);

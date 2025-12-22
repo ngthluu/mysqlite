@@ -1,5 +1,8 @@
+mod ast;
 mod btree;
+mod lexer;
 mod pager;
+mod parser;
 mod repl;
 mod row;
 mod schema;

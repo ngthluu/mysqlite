@@ -1,6 +1,6 @@
 use std::process::exit;
 
-use crate::{btree::BTreeTable, row::Row, types::Value};
+use crate::{indexing::btree::BTreeTable, row::Row, types::Value};
 
 #[derive(Debug)]
 pub enum Command {

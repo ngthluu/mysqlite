@@ -1,19 +1,17 @@
-mod ast;
-mod btree;
-mod lexer;
-mod pager;
-mod parser;
-mod repl;
+mod backend;
+mod cli;
+mod frontend;
+mod indexing;
 mod row;
 mod schema;
 mod types;
 
-use repl::{execute_command, parse_command};
+use cli::repl::{execute_command, parse_command};
 use std::io::{self, Write};
 
 use crate::{
-    btree::BTreeTable,
-    pager::Pager,
+    backend::pager::Pager,
+    indexing::btree::BTreeTable,
     schema::{Column, Schema},
     types::DataType,
 };

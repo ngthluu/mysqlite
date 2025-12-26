@@ -1,6 +1,6 @@
 use crate::{
-    ast::{ColumnDef, Expression, Statement},
-    lexer::{Lexer, Token},
+    frontend::ast::{ColumnDef, Expression, Statement},
+    frontend::lexer::{Lexer, Token},
 };
 
 pub struct Parser {

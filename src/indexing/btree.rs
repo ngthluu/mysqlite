@@ -1,5 +1,5 @@
 use crate::{
-    pager::{PAGE_SIZE, Pager},
+    backend::pager::{PAGE_SIZE, Pager},
     row::Row,
     schema::Schema,
 };

@@ -1,16 +1,20 @@
 use std::fs::{File, OpenOptions};
-use std::io::{self, Read, Seek, SeekFrom};
+use std::io::{self, Read, Seek, SeekFrom, Write};
 
+// Page size is 4096 bytes (4KB)
 pub const PAGE_SIZE: usize = 4096;
-const TABLE_MAX_PAGES: usize = 100;
 
-type Page = [u8; PAGE_SIZE];
+// A page include its id and data
+// Data includes PAGE_SIZE bytes (u8 = 1 byte)
+#[derive(Debug)]
+pub struct Page {
+    pub id: usize,
+    pub data: [u8; PAGE_SIZE],
+}
 
+#[derive(Debug)]
 pub struct Pager {
     file: File,
-    file_length: u64,
-    pages: Vec<Option<Page>>,
-    num_pages: u32,
 }
 
 impl Pager {
@@ -21,54 +25,52 @@ impl Pager {
             .create(true)
             .open(filename)?;
 
-        let file_length = file.metadata()?.len();
-        let num_pages = (file_length / PAGE_SIZE as u64) as u32;
-
-        let mut pages = Vec::with_capacity(TABLE_MAX_PAGES);
-        pages.resize_with(TABLE_MAX_PAGES, || None);
-
-        Ok(Self {
-            file,
-            file_length,
-            pages,
-            num_pages,
-        })
+        Ok(Self { file })
     }
 
-    pub fn get_page(&mut self, page_num: u32) -> io::Result<&mut Page> {
-        if page_num as usize >= TABLE_MAX_PAGES {
+    // Get the total number of pages
+    // currently in the file
+    pub fn page_count(&self) -> io::Result<usize> {
+        let metadata = self.file.metadata()?;
+        let len = metadata.len();
+        let page_count = (len as usize) / PAGE_SIZE;
+        Ok(page_count)
+    }
+
+    // Read page with page_id (from 0)
+    // Calculate the offset: offset = page_id * PAGE_SIZE
+    // Seek to the offset and read the whole page
+    pub fn read_page(&mut self, page_id: usize) -> io::Result<Page> {
+        // Check: page_id bigger than page_count
+        // Raise exception
+        let page_count = self.page_count()?;
+        if page_id >= page_count {
             return Err(io::Error::new(
-                io::ErrorKind::OutOfMemory,
-                "Exceeded table max pages",
+                io::ErrorKind::UnexpectedEof,
+                format!(
+                    "Page {} does not exist. File has {} pages.",
+                    page_id, page_count
+                ),
             ));
         }
 
-        // Check cache
-        if self.pages[page_num as usize].is_none() {
-            // Cache missed
-            let mut page = [0; PAGE_SIZE];
-            let page_offset = page_num as u64 * PAGE_SIZE as u64;
+        let offset = (page_id * PAGE_SIZE) as u64;
 
-            if page_num < self.num_pages {
-                self.file.seek(SeekFrom::Start(page_offset))?;
-                self.file.read_exact(&mut page)?;
-            } else if page_num == self.num_pages {
-                self.num_pages += 1;
-            } else {
-                return Err(io::Error::new(
-                    io::ErrorKind::NotFound,
-                    format!("Page {} not found.", page_num),
-                ));
-            }
-            self.pages[page_num as usize] = Some(page);
-        }
+        self.file.seek(SeekFrom::Start(offset))?;
+        let mut data = [0u8; PAGE_SIZE];
+        self.file.read_exact(&mut data)?;
 
-        match self.pages[page_num as usize].as_mut() {
-            Some(page) => Ok(page),
-            None => Err(io::Error::new(
-                io::ErrorKind::Other,
-                "Page cache logic failed",
-            )),
-        }
+        Ok(Page { id: page_id, data })
+    }
+
+    // Write page
+    // Reverse to the `read_page`
+    pub fn write_page(&mut self, page: &Page) -> io::Result<()> {
+        let offset = (page.id * PAGE_SIZE) as u64;
+
+        self.file.seek(SeekFrom::Start(offset))?;
+        self.file.write_all(&page.data)?;
+
+        Ok(())
     }
 }

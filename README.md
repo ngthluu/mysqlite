@@ -5,17 +5,18 @@ A simple DBMS, similar to SQLITE
 ## Checklist
 
 ### Backend
-- [ ] Pager
+- [x] Pager
 - [ ] Buffer Pool Manager
 
 ### Indexing
+- [ ] Table Heap
 - [ ] B+ Tree
 
 ### Frontend
+- [ ] Execution Engine (Volcano Model)
 - [ ] Tokenizer
 - [ ] Parser
 - [ ] Semantic Analysis
-- [ ] Execution Engine (Volcano Model)
 
 ### ACID
 - [ ] Transaction Manager

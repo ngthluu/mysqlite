@@ -6,7 +6,7 @@ use std::{
 
 use crate::backend::{
     lru_replacer::LRUReplacer,
-    pager::{Page, Pager},
+    pager::{PAGE_SIZE, Page, Pager},
 };
 
 #[derive(Debug)]
@@ -108,12 +108,10 @@ impl Cache {
         let mut pager = self.pager.lock().unwrap();
         let page_data = match pager.read_page(page_id) {
             Ok(p) => p,
-            Err(_) => {
-                return Err(io::Error::new(
-                    io::ErrorKind::Other,
-                    "Page not found on disk",
-                ));
-            }
+            Err(_) => Page {
+                id: page_id,
+                data: [0; PAGE_SIZE],
+            },
         };
 
         frame.page = Some(page_data);

@@ -8,9 +8,9 @@ use crate::backend::pager::{PAGE_SIZE, PageData};
 // Bytes 16-19: How many slots / tuples
 const OFFSET_PAGE_ID: usize = 0;
 const OFFSET_PREV_PAGE_ID: usize = 4;
-const OFFSET_NEXT_PAGE_ID: usize = 8;
+pub const OFFSET_NEXT_PAGE_ID: usize = 8;
 const OFFSET_FREE_SPACE: usize = 12;
-const OFFSET_SLOT_COUNT: usize = 16;
+pub const OFFSET_SLOT_COUNT: usize = 16;
 
 pub const HEADER_SIZE: usize = 20;
 const SLOT_SIZE: usize = 8; // Offset(4) + Length(4)

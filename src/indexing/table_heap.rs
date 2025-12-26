@@ -9,7 +9,7 @@ use crate::{
 // DO NOT hold data itself. Just hold the ID of the first page
 pub struct TableHeap {
     first_page_id: usize,
-    cache: Arc<Cache>,
+    pub cache: Arc<Cache>,
 }
 
 impl TableHeap {
@@ -55,7 +55,9 @@ impl TableHeap {
                     }
                     None => {
                         // 4. End of list. Create a NEW page.
-                        drop(frame); // Unpin current (we'll re-fetch it shortly to link)
+                        // Unpin current (we'll re-fetch it shortly to link)
+                        drop(frame);
+                        self.cache.unpin_page(current_page_id, false);
 
                         // Try to fetch the 'next' logical ID.
                         let new_page_id = current_page_id + 1;

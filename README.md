@@ -9,7 +9,7 @@ A simple DBMS, similar to SQLITE
 - [x] Buffer Pool Manager
 
 ### Indexing
-- [ ] Table Heap
+- [x] Table Heap
 - [ ] B+ Tree (later)
 
 ### Frontend

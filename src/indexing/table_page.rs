@@ -12,7 +12,7 @@ const OFFSET_NEXT_PAGE_ID: usize = 8;
 const OFFSET_FREE_SPACE: usize = 12;
 const OFFSET_SLOT_COUNT: usize = 16;
 
-const HEADER_SIZE: usize = 20;
+pub const HEADER_SIZE: usize = 20;
 const SLOT_SIZE: usize = 8; // Offset(4) + Length(4)
 
 // Table page is for solving the fragmentation problem

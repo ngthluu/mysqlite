@@ -12,6 +12,9 @@ pub struct Page {
     pub data: [u8; PAGE_SIZE],
 }
 
+// Pager
+// Responsible for persist / reading data from disk
+// Reading data via Page
 #[derive(Debug)]
 pub struct Pager {
     file: File,

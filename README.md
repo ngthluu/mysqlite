@@ -6,7 +6,7 @@ A simple DBMS, similar to SQLITE
 
 ### Backend
 - [x] Pager
-- [ ] Buffer Pool Manager
+- [x] Buffer Pool Manager
 
 ### Indexing
 - [ ] Table Heap

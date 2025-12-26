@@ -4,12 +4,13 @@ use std::io::{self, Read, Seek, SeekFrom, Write};
 // Page size is 4096 bytes (4KB)
 pub const PAGE_SIZE: usize = 4096;
 
-// A page include its id and data
-// Data includes PAGE_SIZE bytes (u8 = 1 byte)
+// Page data includes PAGE_SIZE bytes (u8 = 1 byte)
+pub type PageData = [u8; PAGE_SIZE];
+
 #[derive(Debug)]
 pub struct Page {
     pub id: usize,
-    pub data: [u8; PAGE_SIZE],
+    pub data: PageData,
 }
 
 // Pager

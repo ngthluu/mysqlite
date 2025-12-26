@@ -10,7 +10,7 @@ A simple DBMS, similar to SQLITE
 
 ### Indexing
 - [ ] Table Heap
-- [ ] B+ Tree
+- [ ] B+ Tree (later)
 
 ### Frontend
 - [ ] Execution Engine (Volcano Model)

@@ -1,4 +1,5 @@
 mod backend;
+mod indexing;
 
 use crate::backend::pager::Pager;
 
